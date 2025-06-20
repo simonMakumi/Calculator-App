@@ -266,6 +266,7 @@ class CalcApp(QWidget):
 
 if __name__ in "__main__":
     app = QApplication([])
+    app.setWindowIcon(QIcon('icon.ico'))
     main_window = CalcApp()
     main_window.setStyleSheet("QWidget { background-color: #000000; }")
     main_window.show()
