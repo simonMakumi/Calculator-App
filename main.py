@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBox
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt, QTimer
 import math
+import re
 
 
 class CalcApp(QWidget):
@@ -138,6 +139,43 @@ class CalcApp(QWidget):
         QTimer.singleShot(150, lambda: button.setStyleSheet(original_style))
 
 
+    def is_valid_input(self, current_value, new_input):
+        operators = ['+', '-', '*', '/']
+
+        if not current_value:
+            # Prevent starting with an operator (except minus)
+            if new_input in ['+', '*', '/']:
+                return False
+
+        if current_value:
+            last_char = current_value[-1]
+
+            # Prevent two operators in a row
+            if last_char in operators and new_input in operators:
+                return False
+            
+            # Prevent double decimals within the same number
+            if new_input == '.':
+                # Get the last part after an operator
+                tokens = re.split(r'[\+\-\*/]', current_value)
+                if '.' in tokens[-1]:
+                    return False
+
+
+        return True
+
+    def get_validated_expression(self, expression):
+        # Auto-close missing parentheses
+        open_count = expression.count('(')
+        close_count = expression.count(')')
+
+        if open_count > close_count:
+            expression += ')' * (open_count - close_count)
+
+        if not expression.strip():
+            return None
+
+        return expression
 
     def button_click(self):
         button = self.sender()
@@ -146,12 +184,17 @@ class CalcApp(QWidget):
 
         if text == "=":
             symbol = self.text_box.text()
-            try:
-                res = eval(symbol, {"math": math})
-                self.text_box.setText(str(res))
 
+            validated = self.get_validated_expression(symbol)
+            if not validated:
+                self.text_box.setText("Error")
+                return
+
+            try:
+                res = eval(validated, {"__builtins__": None, "math": math})
+                self.text_box.setText(str(res))
             except Exception:
-                print("Error")
+                self.text_box.setText("Error")
                 
         elif text == "Clear":
             self.text_box.clear()
@@ -163,21 +206,27 @@ class CalcApp(QWidget):
         else:
             current_value = self.text_box.text()
 
-            # Special cases for scientific buttons
             if text == '√':
                 self.text_box.setText(current_value + 'math.sqrt(')
+
             elif text == 'sin':
                 self.text_box.setText(current_value + 'math.sin(')
+
             elif text == 'cos':
                 self.text_box.setText(current_value + 'math.cos(')
+
             elif text == 'tan':
                 self.text_box.setText(current_value + 'math.tan(')
+
             elif text == 'log':
                 self.text_box.setText(current_value + 'math.log(')
+
             else:
-                self.text_box.setText(current_value + text)
+                if self.is_valid_input(current_value, text):
+                    self.text_box.setText(current_value + text)
 
         self.text_box.setCursorPosition(0)
+
 
 
     def keyPressEvent(self, event):
@@ -189,16 +238,27 @@ class CalcApp(QWidget):
 
         elif key == Qt.Key_Enter or key == Qt.Key_Return:
             symbol = self.text_box.text()
+
+            validated = self.get_validated_expression(symbol)
+            if not validated:
+                self.text_box.setText("Error")
+                return
+
             try:
-                res = eval(symbol)
+                res = eval(validated, {"__builtins__": None, "math": math})
                 self.text_box.setText(str(res))
             except Exception:
                 self.text_box.setText("Error")
+        
+        elif key == Qt.Key_Escape:
+            self.close()
 
         else:
             text = event.text()
             if text.isdigit() or text in ['+', '-', '*', '/', '.']:
-                self.text_box.setText(self.text_box.text() + text)
+                current_value = self.text_box.text()
+                if self.is_valid_input(current_value, text):
+                    self.text_box.setText(current_value + text)
 
         self.text_box.setCursorPosition(0)
 
