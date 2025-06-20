@@ -17,6 +17,17 @@ class CalcApp(QWidget):
         # Create all widgets
         self.text_box = QLineEdit()
         self.text_box.setFont(QFont("Helvetica", 32))
+        self.text_box.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #f1c40f;  /* Yellow border */
+                border-radius: 15px;        /* Rounded corners */
+                padding: 10px;
+                background-color: #000000;  /* Black background */
+                color: #f1c40f;             /* Yellow text */
+            }
+        """)
+        self.text_box.setAlignment(Qt.AlignLeft)
+
 
         self.grid = QGridLayout()
 
