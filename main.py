@@ -1,7 +1,9 @@
 # Imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt, QPropertyAnimation, QTimer
+from PyQt5.QtCore import Qt, QTimer
+import math
+
 
 
 class CalcApp(QWidget):
@@ -10,7 +12,7 @@ class CalcApp(QWidget):
         self.setFocus()
         # App Settings
         self.setWindowTitle("Calculator App")
-        self.resize(300,400)
+        self.resize(300,500)
 
         # Create all widgets
         self.text_box = QLineEdit()
@@ -19,10 +21,11 @@ class CalcApp(QWidget):
         self.grid = QGridLayout()
 
         self.buttons = [
-            "7","8","9","/",
-            "4","5","6","*",
-            "1","2","3","-",
-            "0",".","=","+"
+            "sin", "cos", "tan", "log",
+            "√", "(", ")", "/", "7",
+            "8", "9", "*","4", "5",
+            "6", "-", "1", "2", "3",
+            "+", "0", ".", "=", 
             ]
         
         row = 0
@@ -129,7 +132,7 @@ class CalcApp(QWidget):
         if text == "=":
             symbol = self.text_box.text()
             try:
-                res = eval(symbol)
+                res = eval(symbol, {"math": math})
                 self.text_box.setText(str(res))
 
             except Exception as e:
@@ -144,7 +147,20 @@ class CalcApp(QWidget):
         
         else:
             current_value = self.text_box.text()
-            self.text_box.setText(current_value + text)
+
+            # Special cases for scientific buttons
+            if text == '√':
+                self.text_box.setText(current_value + 'math.sqrt(')
+            elif text == 'sin':
+                self.text_box.setText(current_value + 'math.sin(')
+            elif text == 'cos':
+                self.text_box.setText(current_value + 'math.cos(')
+            elif text == 'tan':
+                self.text_box.setText(current_value + 'math.tan(')
+            elif text == 'log':
+                self.text_box.setText(current_value + 'math.log(')
+            else:
+                self.text_box.setText(current_value + text)
 
     def keyPressEvent(self, event):
         key = event.key()
