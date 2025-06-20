@@ -7,7 +7,7 @@ class CalcApp(QWidget):
         super().__init__()
         # App Settings
         self.setWindowTitle("Calculator App")
-        self.resize(200,400)
+        self.resize(300,400)
 
         # Create all widgets
         self.text_box = QLineEdit()
@@ -28,8 +28,36 @@ class CalcApp(QWidget):
         for text in self.buttons:
             button = QPushButton(text)
             button.clicked.connect(self.button_click)
-            button.setStyleSheet("QPushButton { font: 25pt Comic Sans MS; padding: 10px;}")
+
+            # Apply styling based on button type
+            if text in ['+', '-', '*', '/', '=']:
+                button.setStyleSheet("""
+                    QPushButton {
+                        font: 20pt Comic Sans MS;
+                        padding: 15px;
+                        border-radius: 15px;
+                        background-color: #add8e6;  /* Light blue */
+                    }
+                    QPushButton:hover {
+                        background-color: #87ceeb;  /* Sky blue on hover */
+                    }
+                """)
+            else:
+                button.setStyleSheet("""
+                    QPushButton {
+                        font: 20pt Comic Sans MS;
+                        padding: 15px;
+                        border-radius: 15px;
+                        background-color: #ffffff;  /* White */
+                    }
+                    QPushButton:hover {
+                        background-color: #d3d3d3;  /* Gray on hover */
+                    }
+                """)
+
             self.grid.addWidget(button, row, col)
+
+            
             col +=1
 
             if col > 3:
@@ -38,8 +66,28 @@ class CalcApp(QWidget):
 
         self.clear = QPushButton("Clear")
         self.delete = QPushButton("Del")
-        self.clear.setStyleSheet("QPushButton { font: 25pt Comic Sans MS; padding: 10px;}")
-        self.delete.setStyleSheet("QPushButton { font: 25pt Comic Sans MS; padding: 10px;}")
+        self.clear.setStyleSheet("""
+                    QPushButton {
+                        font: 20pt Comic Sans MS;
+                        padding: 15px;
+                        border-radius: 15px;
+                        background-color: #f08080;  /* Light red */
+                    }
+                    QPushButton:hover {
+                        background-color: #fa8072;  /* Salmon on hover */
+                    }
+                """)
+        self.delete.setStyleSheet("""
+                    QPushButton {
+                        font: 20pt Comic Sans MS;
+                        padding: 15px;
+                        border-radius: 15px;
+                        background-color: #f08080;  /* Light red */
+                    }
+                    QPushButton:hover {
+                        background-color: #fa8072;  /* Salmon on hover */
+                    }
+                """)
 
         master_layout = QVBoxLayout()
         master_layout.addWidget(self.text_box)
@@ -60,7 +108,7 @@ class CalcApp(QWidget):
 
 
     def button_click(self):
-        button = app.sender()
+        button = self.sender()
         text = button.text()
 
         if text == "=":
@@ -87,6 +135,6 @@ class CalcApp(QWidget):
 if __name__ in "__main__":
     app = QApplication([])
     main_window = CalcApp()
-    main_window.setStyleSheet("QWidget { background-color: #f0f0f8}")
+    main_window.setStyleSheet("QWidget { background-color: #e6f2ff}")
     main_window.show()
     app.exec_()
