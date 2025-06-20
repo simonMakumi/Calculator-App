@@ -1,7 +1,8 @@
 # Imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPropertyAnimation, QTimer
+
 
 class CalcApp(QWidget):
     def __init__(self):
@@ -108,10 +109,22 @@ class CalcApp(QWidget):
         self.clear.clicked.connect(self.button_click)
         self.delete.clicked.connect(self.button_click)
 
+    def animate_button(self, button):
+        # Save the original style
+        original_style = button.styleSheet()
+
+        # Apply the pressed style
+        button.setStyleSheet(original_style + " QPushButton { background-color: #cccccc; }")
+
+        # Use QTimer to revert the style after 100 milliseconds
+        QTimer.singleShot(1000, lambda: button.setStyleSheet(original_style))
+
+
 
     def button_click(self):
         button = self.sender()
         text = button.text()
+        self.animate_button(button)
 
         if text == "=":
             symbol = self.text_box.text()
