@@ -1,9 +1,8 @@
 # Imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt, QTimer
 import math
-
 
 
 class CalcApp(QWidget):
@@ -12,6 +11,7 @@ class CalcApp(QWidget):
         self.setFocus()
         # App Settings
         self.setWindowTitle("Calculator App")
+        self.setWindowIcon(QIcon("icon.ico"))
         self.resize(300,500)
 
         # Create all widgets
