@@ -53,25 +53,27 @@ class CalcApp(QWidget):
                         font: 20pt Comic Sans MS;
                         padding: 15px;
                         border-radius: 15px;
-                        background-color: #add8e6;  /* Light blue */
+                        background-color: #444444;
+                        color: #f1c40f;
                     }
                     QPushButton:hover {
-                        background-color: #87ceeb;  /* Sky blue on hover */
-                    }
-                """)
-            else:
-                button.setStyleSheet("""
-                    QPushButton {
-                        font: 20pt Comic Sans MS;
-                        padding: 15px;
-                        border-radius: 15px;
-                        background-color: #ffffff;  /* White */
-                    }
-                    QPushButton:hover {
-                        background-color: #d3d3d3;  /* Gray on hover */
+                        background-color: #666666;
                     }
                 """)
 
+            else:
+                button.setStyleSheet("""
+                    QPushButton {
+                    font: 20pt Comic Sans MS;
+                    padding: 15px;
+                    border-radius: 15px;
+                    background-color: #333333;  /* Dark gray */
+                    color: #f1c40f;             /* Yellow text */
+                }
+                QPushButton:hover {
+                    background-color: #555555;
+                }
+            """)
             self.grid.addWidget(button, row, col)
 
             
@@ -84,27 +86,29 @@ class CalcApp(QWidget):
         self.clear = QPushButton("Clear")
         self.delete = QPushButton("Del")
         self.clear.setStyleSheet("""
-                    QPushButton {
+                        QPushButton {
                         font: 20pt Comic Sans MS;
                         padding: 15px;
                         border-radius: 15px;
-                        background-color: #f08080;  /* Light red */
+                        background-color: #c0392b;  /* Red */
+                        color: #ffffff;             /* White text */
                     }
                     QPushButton:hover {
-                        background-color: #fa8072;  /* Salmon on hover */
+                        background-color: #e74c3c;
                     }
                 """)
         self.delete.setStyleSheet("""
                     QPushButton {
-                        font: 20pt Comic Sans MS;
-                        padding: 15px;
-                        border-radius: 15px;
-                        background-color: #f08080;  /* Light red */
-                    }
-                    QPushButton:hover {
-                        background-color: #fa8072;  /* Salmon on hover */
-                    }
-                """)
+                    font: 20pt Comic Sans MS;
+                    padding: 15px;
+                    border-radius: 15px;
+                    background-color: #c0392b;  /* Red */
+                    color: #ffffff;             /* White text */
+                }
+                QPushButton:hover {
+                    background-color: #e74c3c;
+                }
+            """)
 
         master_layout = QVBoxLayout()
         master_layout.addWidget(self.text_box)
@@ -130,8 +134,8 @@ class CalcApp(QWidget):
         # Apply the pressed style
         button.setStyleSheet(original_style + " QPushButton { background-color: #cccccc; }")
 
-        # Use QTimer to revert the style after 100 milliseconds
-        QTimer.singleShot(1000, lambda: button.setStyleSheet(original_style))
+        # Use QTimer to revert the style after 150 milliseconds
+        QTimer.singleShot(150, lambda: button.setStyleSheet(original_style))
 
 
 
@@ -146,8 +150,8 @@ class CalcApp(QWidget):
                 res = eval(symbol, {"math": math})
                 self.text_box.setText(str(res))
 
-            except Exception as e:
-                print("Error", e)
+            except Exception:
+                print("Error")
                 
         elif text == "Clear":
             self.text_box.clear()
@@ -173,6 +177,9 @@ class CalcApp(QWidget):
             else:
                 self.text_box.setText(current_value + text)
 
+        self.text_box.setCursorPosition(0)
+
+
     def keyPressEvent(self, event):
         key = event.key()
 
@@ -185,7 +192,7 @@ class CalcApp(QWidget):
             try:
                 res = eval(symbol)
                 self.text_box.setText(str(res))
-            except Exception as e:
+            except Exception:
                 self.text_box.setText("Error")
 
         else:
@@ -193,11 +200,13 @@ class CalcApp(QWidget):
             if text.isdigit() or text in ['+', '-', '*', '/', '.']:
                 self.text_box.setText(self.text_box.text() + text)
 
+        self.text_box.setCursorPosition(0)
+
 
 
 if __name__ in "__main__":
     app = QApplication([])
     main_window = CalcApp()
-    main_window.setStyleSheet("QWidget { background-color: #e6f2ff}")
+    main_window.setStyleSheet("QWidget { background-color: #000000; }")
     main_window.show()
     app.exec_()
