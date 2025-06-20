@@ -1,10 +1,12 @@
 # Imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 class CalcApp(QWidget):
     def __init__(self):
         super().__init__()
+        self.setFocus()
         # App Settings
         self.setWindowTitle("Calculator App")
         self.resize(300,400)
@@ -130,6 +132,27 @@ class CalcApp(QWidget):
         else:
             current_value = self.text_box.text()
             self.text_box.setText(current_value + text)
+
+    def keyPressEvent(self, event):
+        key = event.key()
+
+        if key == Qt.Key_Backspace:
+            current_value = self.text_box.text()
+            self.text_box.setText(current_value[:-1])
+
+        elif key == Qt.Key_Enter or key == Qt.Key_Return:
+            symbol = self.text_box.text()
+            try:
+                res = eval(symbol)
+                self.text_box.setText(str(res))
+            except Exception as e:
+                self.text_box.setText("Error")
+
+        else:
+            text = event.text()
+            if text.isdigit() or text in ['+', '-', '*', '/', '.']:
+                self.text_box.setText(self.text_box.text() + text)
+
 
 
 if __name__ in "__main__":
