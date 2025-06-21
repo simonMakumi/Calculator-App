@@ -1,1 +1,1 @@
-[calc_pic.png](calc_image)
+[calc_image](calc_pic.png)
