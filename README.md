@@ -18,14 +18,14 @@ The calculator features:
 
 ## 🚀 Features
 
-- ✔️ **Basic Arithmetic:** Addition, Subtraction, Multiplication, Division
-- ✔️ **Scientific Functions:** sin, cos, tan, log, square root
-- ✔️ **Smart Validation:** Prevents invalid input (like double operators)
-- ✔️ **Auto-close Parentheses:** Balances expressions automatically
-- ✔️ **Keyboard Support:** Type directly using keyboard keys
-- ✔️ **Responsive Design:** Smooth button animations
-- ✔️ **Dark Theme:** Stylish black and yellow color scheme
-- ✔️ **Custom Icon:** App includes a custom window icon (if supported by packager)
+✔️ **Basic Arithmetic:** Addition, Subtraction, Multiplication, Division
+✔️ **Scientific Functions:** sin, cos, tan, log, square root
+✔️ **Smart Validation:** Prevents invalid input (like double operators)
+✔️ **Auto-close Parentheses:** Balances expressions automatically
+✔️ **Keyboard Support:** Type directly using keyboard keys
+✔️ **Responsive Design:** Smooth button animations
+✔️ **Dark Theme:** Stylish black and yellow color scheme
+✔️ **Custom Icon:** App includes a custom window icon (if supported by packager)
 
 ---
 
@@ -65,7 +65,7 @@ pyinstaller --noconfirm --windowed --icon=icon.ico main.py
 - Make sure your icon.ico is a valid ICO file.
 
 
-### ✨ Future Improvements
+## ✨ Future Improvements
 -Add theme switch (light/dark).
 -Add calculation history.
 -Add memory functions (M+, M-, MR).
